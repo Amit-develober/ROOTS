@@ -1,0 +1,979 @@
+You are a senior full-stack engineer and product designer.
+
+Build a working MVP for my startup:
+
+PRODUCT NAME:
+AI Email Action Manager
+
+TAGLINE:
+"From Inbox Overload to Clarity & Action"
+
+CORE IDEA:
+People receive dozens or hundreds of emails every day. Important emails, promotions, newsletters, bills, notifications, and work emails get mixed together.
+
+Our product connects to Gmail, uses AI to understand emails, identifies which emails actually require attention, extracts actions and deadlines, and converts the inbox into a prioritized daily action list.
+
+IMPORTANT:
+This is an MVP for a student startup project with a ₹20,000 budget.
+
+Do NOT over-engineer it.
+Do NOT build a Chrome extension.
+Do NOT build a mobile app.
+Do NOT build unnecessary enterprise features.
+
+Build a polished web application first.
+
+--------------------------------------------------
+1. TECH STACK
+--------------------------------------------------
+
+Frontend:
+- HTML
+- CSS
+- JavaScript
+OR React if you believe React will significantly improve maintainability.
+
+Backend:
+- Python
+- FastAPI
+
+Database:
+- SQLite for MVP
+
+AI:
+- Gemini API
+- Keep the AI provider behind a clean service layer so another AI API can be added later.
+
+Authentication:
+- Google OAuth 2.0
+
+Email:
+- Gmail API
+
+Deployment should be possible on a low-cost/free cloud platform.
+
+--------------------------------------------------
+2. PRODUCT FLOW
+--------------------------------------------------
+
+User visits:
+
+Landing Page
+      ↓
+Google Login
+      ↓
+Connect Gmail
+      ↓
+Fetch recent emails
+      ↓
+AI analyzes emails
+      ↓
+Classify emails
+      ↓
+Extract action/deadline/priority
+      ↓
+Dashboard
+      ↓
+User sees "Today's Actions"
+
+--------------------------------------------------
+3. LANDING PAGE
+--------------------------------------------------
+
+Create a professional startup landing page.
+
+Hero:
+
+AI Email Action Manager
+
+"Don't manage your inbox.
+Manage what needs to be done."
+
+Subheading:
+
+"AI turns your email overload into a clear, prioritized list of actions."
+
+Primary button:
+
+[ Connect Gmail ]
+
+Secondary button:
+
+[ See How It Works ]
+
+Sections:
+
+1. The Problem
+2. How It Works
+3. Example
+4. Key Features
+5. Privacy
+6. Pricing
+7. CTA
+
+Use a clean premium SaaS design.
+
+Avoid:
+- excessive gradients
+- neon effects
+- excessive animations
+- childish design
+- fake statistics
+- unnecessary illustrations
+
+Design should feel trustworthy because the product handles email.
+
+--------------------------------------------------
+4. GOOGLE LOGIN + GMAIL CONNECTION
+--------------------------------------------------
+
+Implement Google OAuth 2.0.
+
+The user should be able to:
+
+1. Sign in with Google
+2. Grant the minimum Gmail permissions necessary
+3. Connect their Gmail account
+4. Return to the dashboard
+
+Clearly explain what permissions are being requested.
+
+Provide a Disconnect Gmail option.
+
+IMPORTANT:
+Do not request unnecessary permissions.
+
+Do not store Gmail passwords.
+
+Do not pretend the product has enterprise-grade security.
+
+--------------------------------------------------
+5. EMAIL IMPORT
+--------------------------------------------------
+
+After Gmail connection:
+
+Fetch a limited number of recent emails for MVP.
+
+Start with the latest 20-50 emails.
+
+For each email retrieve:
+
+- sender
+- sender email
+- subject
+- timestamp
+- body/text
+- thread ID
+- message ID
+
+Handle HTML emails safely.
+
+Do not expose raw email contents unnecessarily in the UI.
+
+Create a loading screen:
+
+"Analyzing your inbox..."
+
+Show progress such as:
+
+Analyzing 12 / 30 emails
+
+--------------------------------------------------
+6. AI EMAIL ANALYSIS
+--------------------------------------------------
+
+This is the core feature.
+
+For every email, ask the AI to determine:
+
+1. Category
+2. Priority
+3. Whether action is required
+4. Required action
+5. Deadline
+6. Short summary
+7. Reason for priority
+
+Categories:
+
+- Action Required
+- Work
+- Personal
+- Transaction
+- Promotion
+- Newsletter
+- Social
+- Notification
+- Spam
+- Other
+
+Priority:
+
+- HIGH
+- MEDIUM
+- LOW
+- NONE
+
+Action Required:
+
+true / false
+
+Deadline:
+
+Extract a specific date when possible.
+
+If no deadline exists:
+
+null
+
+Action:
+
+Example:
+"Reply to client"
+"Pay electricity bill"
+"Submit assignment"
+"Confirm meeting"
+
+If no action is required:
+
+null
+
+Summary:
+
+Maximum 2 sentences.
+
+Reason:
+
+Short explanation of why the email received its priority.
+
+--------------------------------------------------
+7. USE STRUCTURED AI OUTPUT
+--------------------------------------------------
+
+The AI MUST return structured JSON.
+
+Example:
+
+{
+  "category": "Action Required",
+  "priority": "HIGH",
+  "action_required": true,
+  "action": "Confirm revised project deadline",
+  "deadline": "2026-08-25",
+  "summary": "Client requested confirmation of a revised project deadline.",
+  "reason": "The email requires a response and has a specific deadline."
+}
+
+Do not depend on free-form AI responses.
+
+Validate the JSON before saving it.
+
+If AI returns invalid JSON:
+- retry once
+- otherwise mark the email as "Needs Review"
+
+--------------------------------------------------
+8. DASHBOARD
+--------------------------------------------------
+
+Create a clean dashboard.
+
+Top navigation:
+
+AI Email Action Manager
+Dashboard
+Inbox
+Actions
+Settings
+
+Main dashboard:
+
+"Good morning 👋"
+
+"Here's what needs your attention."
+
+Show:
+
+HIGH PRIORITY
+MEDIUM PRIORITY
+LOW PRIORITY
+
+Example:
+
+--------------------------------------------
+
+TODAY'S ACTIONS
+
+🔴 HIGH
+
+Client A – Project Revision
+
+"Client requested confirmation of
+the revised project timeline."
+
+Deadline:
+Today, 2:00 PM
+
+[ View Email ]
+[ Mark Done ]
+
+
+🟠 MEDIUM
+
+Hosting Invoice
+
+Payment of ₹1,299 is pending.
+
+Due:
+Tomorrow
+
+[ View Email ]
+[ Mark Done ]
+
+
+🟢 LOW
+
+School – Practical Schedule
+
+Physics practical rescheduled.
+
+Due:
+This Week
+
+[ View Email ]
+[ Mark Done ]
+
+--------------------------------------------
+
+Also display:
+
+Important emails:
+6
+
+Actions:
+4
+
+Promotional:
+18
+
+Newsletters:
+7
+
+Emails analyzed:
+35
+
+--------------------------------------------------
+9. ACTION LIST
+--------------------------------------------------
+
+Create a dedicated Actions page.
+
+Sections:
+
+Overdue
+Today
+Tomorrow
+This Week
+No Deadline
+
+Each action should have:
+
+- email subject
+- sender
+- priority
+- action
+- deadline
+- summary
+- status
+
+Status:
+
+- Pending
+- Completed
+
+Allow:
+
+[ Mark Complete ]
+
+Completed actions should move to a Completed section.
+
+--------------------------------------------------
+10. EMAIL VIEW
+--------------------------------------------------
+
+When the user clicks an email:
+
+Show:
+
+Sender
+Subject
+Date
+
+AI Summary
+
+Category
+
+Priority
+
+Required Action
+
+Deadline
+
+Why AI thinks this matters
+
+Then:
+
+[ Open in Gmail ]
+
+Do not try to reproduce the complete Gmail interface.
+
+--------------------------------------------------
+11. INBOX PAGE
+--------------------------------------------------
+
+Create a simplified inbox.
+
+Filters:
+
+All
+Important
+Action Required
+Promotions
+Newsletters
+Transactions
+
+Example:
+
+🔴 Client A
+Project deadline changed
+Action Required
+
+🟢 Amazon
+Your order has shipped
+Transaction
+
+⚪ Newsletter
+Weekly technology newsletter
+Newsletter
+
+Allow sorting by:
+
+Priority
+Date
+Category
+
+--------------------------------------------------
+12. "FROM CHAOS TO CLARITY" FEATURE
+--------------------------------------------------
+
+Create a visual dashboard section showing:
+
+BEFORE AI
+
+Inbox:
+92 unread emails
+
+Amazon
+Flipkart
+ICICI Bank
+LinkedIn
+Client
+Newsletter
+Paytm
+Zomato
+...
+
+AFTER AI
+
+Today's Actions:
+
+🔴 Client deadline
+🟠 Invoice payment
+🟠 School schedule
+
+Other:
+
+Promotions
+Newsletters
+Transactions
+Social
+Spam
+
+This should visually demonstrate the value proposition.
+
+--------------------------------------------------
+13. PERSONALIZATION
+--------------------------------------------------
+
+For MVP, implement lightweight personalization.
+
+Allow user to select:
+
+Professional
+Student
+Freelancer
+Business Owner
+General
+
+Use this preference to slightly influence prioritization.
+
+Example:
+
+For a freelancer:
+Client emails = potentially higher priority.
+
+For a student:
+Assignment/school emails = potentially higher priority.
+
+Do NOT build complex machine learning personalization yet.
+
+--------------------------------------------------
+14. SETTINGS
+--------------------------------------------------
+
+Settings page should contain:
+
+Google account
+Connected Gmail
+Disconnect Gmail
+Profile type
+AI preferences
+Data settings
+
+Add:
+
+"Delete My Data"
+
+The user should be able to delete stored analyzed email data.
+
+--------------------------------------------------
+15. PRIVACY
+--------------------------------------------------
+
+Create a privacy section.
+
+Explain clearly:
+
+- Gmail is connected through Google OAuth.
+- We do not store Gmail passwords.
+- Only necessary email data should be processed.
+- Users can disconnect Gmail.
+- Users can delete stored data.
+
+Do not make unsupported security claims.
+
+Add a clear link to Privacy Policy.
+
+--------------------------------------------------
+16. DATABASE
+--------------------------------------------------
+
+Create SQLite models/tables for:
+
+users
+
+emails
+
+email_analysis
+
+actions
+
+user_preferences
+
+Suggested structure:
+
+users:
+id
+google_id
+email
+name
+created_at
+
+emails:
+id
+user_id
+gmail_message_id
+thread_id
+sender
+subject
+received_at
+body
+created_at
+
+email_analysis:
+id
+email_id
+category
+priority
+action_required
+action
+deadline
+summary
+reason
+created_at
+
+actions:
+id
+user_id
+email_id
+action_text
+priority
+deadline
+status
+created_at
+completed_at
+
+user_preferences:
+id
+user_id
+profile_type
+
+Use user_id everywhere so the application can later become multi-user SaaS.
+
+--------------------------------------------------
+17. SECURITY
+--------------------------------------------------
+
+Implement basic security best practices.
+
+- Never expose API keys in frontend code.
+- Store secrets in environment variables.
+- Validate OAuth tokens.
+- Validate all user inputs.
+- Use secure session handling.
+- Prevent unauthorized access between users.
+- Never allow User A to access User B's emails.
+- Do not log complete email contents.
+- Do not expose API keys.
+- Use HTTPS in deployment.
+- Add basic rate limiting where practical.
+
+--------------------------------------------------
+18. DEMO MODE
+--------------------------------------------------
+
+VERY IMPORTANT.
+
+Create a DEMO MODE so the product can be demonstrated without connecting a real Gmail account.
+
+Add:
+
+[ Try Demo ]
+
+The demo should load 10-15 realistic sample emails.
+
+Examples:
+
+- Client project deadline
+- Electricity bill
+- Amazon order
+- LinkedIn notification
+- Newsletter
+- Bank transaction
+- Meeting invitation
+- Promotional email
+- College/school email
+
+Then show the AI-generated action dashboard.
+
+This is essential for school presentations.
+
+--------------------------------------------------
+19. ERROR HANDLING
+--------------------------------------------------
+
+Handle:
+
+- Gmail connection failure
+- OAuth cancellation
+- API failure
+- AI failure
+- invalid AI response
+- no emails found
+- expired session
+- rate limits
+
+Never show raw technical errors to users.
+
+Use friendly messages.
+
+Example:
+
+"Something went wrong while analyzing your emails. Please try again."
+
+--------------------------------------------------
+20. PERFORMANCE
+--------------------------------------------------
+
+Do not process hundreds of emails simultaneously.
+
+For MVP:
+
+Analyze 20-50 emails.
+
+Use background processing where practical.
+
+Show progress to the user.
+
+Avoid unnecessary API calls.
+
+Cache analysis results.
+
+Do not analyze the same email repeatedly unless the user requests re-analysis.
+
+--------------------------------------------------
+21. PRICING PAGE
+--------------------------------------------------
+
+Create a simple pricing page for future monetization.
+
+FREE
+₹0/month
+100 emails/month
+
+STARTER
+₹199/month
+2,000 emails/month
+
+PRO
+₹499/month
+10,000 emails/month
+
+For the MVP, these can be visual only.
+
+Do not implement payment integration yet.
+
+--------------------------------------------------
+22. ANALYTICS
+--------------------------------------------------
+
+Add basic product metrics.
+
+Track:
+
+- emails analyzed
+- action-required emails
+- high-priority emails
+- completed actions
+- categories
+- processing time
+
+Do not collect unnecessary personal information.
+
+--------------------------------------------------
+23. UI DESIGN
+--------------------------------------------------
+
+Visual style:
+
+Premium
+Clean
+Trustworthy
+Minimal
+Modern SaaS
+
+Primary visual identity can use:
+
+Deep navy
+White
+Subtle purple accents
+Green for completed/success
+Red/orange for priority
+
+Use cards, whitespace and clear typography.
+
+Responsive design:
+
+Desktop
+Tablet
+Mobile
+
+But prioritize desktop because this is an email productivity application.
+
+--------------------------------------------------
+24. PROJECT STRUCTURE
+--------------------------------------------------
+
+Create a clean structure similar to:
+
+/frontend
+/backend
+    /api
+    /services
+    /models
+    /database
+    /auth
+    /ai
+    /gmail
+    /utils
+/tests
+.env.example
+README.md
+
+Keep Gmail integration separate from AI integration.
+
+Keep AI prompts in separate files/modules.
+
+--------------------------------------------------
+25. TESTING
+--------------------------------------------------
+
+Create tests for:
+
+- AI JSON validation
+- email classification
+- priority calculation
+- action extraction
+- deadline extraction
+- authentication
+- authorization
+- database operations
+
+Also create sample test emails.
+
+--------------------------------------------------
+26. README
+--------------------------------------------------
+
+Create a detailed README explaining:
+
+1. Product
+2. Features
+3. Tech stack
+4. Local setup
+5. Environment variables
+6. Google OAuth setup
+7. Gmail API setup
+8. Gemini API setup
+9. Database setup
+10. Running locally
+11. Deployment
+12. Security considerations
+13. Known limitations
+14. Future roadmap
+
+--------------------------------------------------
+27. MVP LIMITATIONS
+--------------------------------------------------
+
+Do NOT build these now:
+
+❌ Chrome extension
+❌ Mobile app
+❌ Automatic email replies
+❌ Automatic email deletion
+❌ Automatic email archiving
+❌ Payment gateway
+❌ Complex ML personalization
+❌ Enterprise admin dashboard
+❌ Team collaboration
+❌ Multiple email providers
+❌ WhatsApp integration
+❌ Calendar automation
+❌ Voice assistant
+
+These can be future features.
+
+--------------------------------------------------
+28. SUCCESS CRITERIA
+--------------------------------------------------
+
+The MVP is complete only when:
+
+[ ] User can open website
+[ ] User can use Demo Mode
+[ ] User can sign in with Google
+[ ] User can connect Gmail
+[ ] App can retrieve recent emails
+[ ] AI analyzes emails
+[ ] AI returns structured results
+[ ] Emails are categorized
+[ ] Priority is assigned
+[ ] Actions are extracted
+[ ] Deadlines are extracted
+[ ] Dashboard displays actions
+[ ] User can mark actions complete
+[ ] User can view analyzed email
+[ ] User can disconnect Gmail
+[ ] User can delete stored data
+[ ] No API keys are exposed
+[ ] Users cannot access another user's data
+[ ] Application works on mobile and desktop
+[ ] README is complete
+[ ] Demo mode works without Gmail
+
+--------------------------------------------------
+29. DEVELOPMENT PROCESS
+--------------------------------------------------
+
+IMPORTANT:
+
+Do not generate the entire project blindly in one step.
+
+Work in stages:
+
+STAGE 1:
+Create project architecture and database.
+
+STAGE 2:
+Build landing page and dashboard UI using mock data.
+
+STAGE 3:
+Implement Demo Mode.
+
+STAGE 4:
+Implement Google OAuth.
+
+STAGE 5:
+Implement Gmail API.
+
+STAGE 6:
+Implement AI analysis.
+
+STAGE 7:
+Connect real AI results to dashboard.
+
+STAGE 8:
+Implement security and authorization.
+
+STAGE 9:
+Testing.
+
+STAGE 10:
+Deployment preparation.
+
+After each stage:
+- run the application
+- test the feature
+- fix errors
+- then continue
+
+Do not move to the next stage if the current stage is broken.
+
+--------------------------------------------------
+FINAL PRODUCT GOAL
+--------------------------------------------------
+
+The finished MVP should make a user feel:
+
+"I don't need to read 50 emails to figure out what matters.
+This product tells me what needs my attention."
+
+The core transformation is:
+
+INBOX
+↓
+AI UNDERSTANDS
+↓
+FILTERS
+↓
+PRIORITIZES
+↓
+EXTRACTS ACTIONS
+↓
+TODAY'S ACTION LIST
+
+Build this as a REAL working product, not a static mockup.
+
+Start with STAGE 1.
